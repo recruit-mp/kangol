@@ -137,10 +137,16 @@ func PollingDeployment(service, cluster string, pollingTime int64) (string, erro
 
 	// TODO: タスクが連続で変わり続ける場合はdeploy失敗
 	// (ex) service nginx has started 1 tasks: task 474be549-f9e0-4aee-bf1b-6fbac8e3b445.
-	// TODO: pollingCountを元にdeployTimeOutの実装
+
+	log.Info(int64(pollingCount) * pollingTime)
+	if int64(pollingCount)*pollingTime > 600 {
+		return deployment.message, errors.New("PollingDeployment time out")
+	}
 
 	if deploymentMessage == "" {
 		deploymentMessage = deployment.message
+	} else if strings.Contains(deployment.message, "insufficient memory") || strings.Contains(deployment.message, "insufficient CPU") {
+		log.Info("Waiting for Node AutoScaler...")
 	} else if deploymentMessage != deployment.message {
 		pollingCount = 0
 		_, err := checkResource(deployment.message)
