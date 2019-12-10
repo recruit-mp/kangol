@@ -66,6 +66,10 @@ func GetOldRevision(service, cluster string) (revision string, err error) {
 		return "", err
 	}
 
+	if resp.Failures != nil {
+		return "", fmt.Errorf("failed describe services : %s", resp.Failures)
+	}
+
 	return strings.Split(*resp.Services[0].TaskDefinition, "/")[1], err
 }
 
