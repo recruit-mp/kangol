@@ -1,18 +1,17 @@
-package main
+package internal
 
 import (
-	"os"
-
 	"github.com/codegangsta/cli"
+	"github.com/recruit-mp/kangol/internal/operation"
 )
 
-func main() {
+func NewApp(version string) *cli.App {
 	finished := make(chan bool)
-	go loading(finished)
+	go operation.Loading(finished)
 
 	app := cli.NewApp()
 	app.Name = "kangol"
-	app.Version = "0.2.8"
+	app.Version = version
 	app.Usage = "ECS deployment tool"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -49,7 +48,7 @@ func main() {
 		if c.Bool("loading") == false {
 			finished <- true
 		}
-		deploy(
+		operation.Deploy(
 			c.String("conf"),
 			c.String("tag"),
 			c.Bool("debug"),
@@ -89,11 +88,9 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) {
-				runTask(c.String("conf"), c.String("tag"), c.String("command"), c.Int64("cpu"), c.Int64("memory"))
+				operation.RunTask(c.String("conf"), c.String("tag"), c.String("command"), c.Int64("cpu"), c.Int64("memory"))
 			},
 		},
 	}
-
-	app.Run(os.Args)
-
+	return app
 }

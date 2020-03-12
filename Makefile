@@ -9,7 +9,7 @@ test:
 	go test $$(go list ./... | tr '\n' ' ')
 
 build:
-	go build -o ./bin/kangol *.go
+	go build -o ./bin/kangol cmd/kangol/main.go
 
 update:
 	go get -u=patch

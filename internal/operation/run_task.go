@@ -1,4 +1,4 @@
-package main
+package operation
 
 import (
 	"fmt"
@@ -6,12 +6,12 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/recruit-mp/kangol/awscloudwatchlogs"
-	"github.com/recruit-mp/kangol/awsecs"
-	"github.com/recruit-mp/kangol/task"
+	"github.com/recruit-mp/kangol/internal/awscloudwatchlogs"
+	"github.com/recruit-mp/kangol/internal/awsecs"
+	"github.com/recruit-mp/kangol/internal/task"
 )
 
-func runTask(conf, tag string, command string, cpu int64, memory int64) {
+func RunTask(conf, tag string, command string, cpu int64, memory int64) {
 
 	deployment, taskDefinition, err := task.ReadConfig(conf, appendTags(tag))
 

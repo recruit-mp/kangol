@@ -1,4 +1,4 @@
-package main
+package operation
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/recruit-mp/kangol/awsecs"
-	"github.com/recruit-mp/kangol/task"
+	"github.com/recruit-mp/kangol/internal/awsecs"
+	"github.com/recruit-mp/kangol/internal/task"
 )
 
-func deploy(conf, tag string, debug bool, skipPolling bool, pollingTime int64) {
+func Deploy(conf, tag string, debug bool, skipPolling bool, pollingTime int64) {
 
 	deployment, taskDefinition, err := task.ReadConfig(conf, appendTags(tag))
 
@@ -93,7 +93,7 @@ func appendTags(tag string) map[string]string {
 	return tags
 }
 
-func loading(finished chan bool) {
+func Loading(finished chan bool) {
 loop:
 	for {
 		select {
